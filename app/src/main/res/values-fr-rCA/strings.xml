@@ -7,4 +7,8 @@
     <string name="login_name">S\'identifier Nom</string>
     <string name="password_text">Mot de passe</string>
     <string name="switch_text">Qu\'est-ce que cela fait?</string>
+    <string name="dialog_message">Voulez-vous terminer l\'activité?</string>
+    <string name="dialog_title">Activité de finition?</string>
+    <string name="ok">D\'accord</string>
+    <string name="cancel">Annuler</string>
 </resources>
