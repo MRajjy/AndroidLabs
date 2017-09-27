@@ -19,10 +19,10 @@ import android.widget.Toast;
 public class ListItemsActivity extends Activity {
 
     protected static final String ACTIVITY_NAME = "ListItemsActivity";
-    ImageButton button;
+    ImageButton button = null;
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    Switch aSwitch;
-    CheckBox cbox;
+    Switch aSwitch = null;
+    CheckBox cbox = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class ListItemsActivity extends Activity {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User clicked OK button
                                     Intent resultIntent = new Intent(  );
-                                    resultIntent.putExtra("Response", "My information to share");
+                                    resultIntent.putExtra("Response", R.string.extra);
                                     setResult(Activity.RESULT_OK, resultIntent);
                                     finish();
 
@@ -87,12 +87,12 @@ public class ListItemsActivity extends Activity {
     }
 
     private void checked(){
-        Toast toast = Toast.makeText(this, "Switch is on", Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(this, R.string.switch_on, Toast.LENGTH_SHORT);
         toast.show(); //display your message box
     }
 
     private void notChecked(){
-        Toast toast = Toast.makeText(this, "Switch is off", Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(this, R.string.switch_off, Toast.LENGTH_LONG);
         toast.show(); //display your message box
     }
 

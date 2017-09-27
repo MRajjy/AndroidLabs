@@ -11,4 +11,7 @@
     <string name="dialog_title">Activité de finition?</string>
     <string name="ok">D\'accord</string>
     <string name="cancel">Annuler</string>
+    <string name="switch_on">Le commutateur est activé</string>
+    <string name="switch_off">L\'interrupteur est éteint</string>
+    <string name="extra">Mes informations à partager</string>
 </resources>

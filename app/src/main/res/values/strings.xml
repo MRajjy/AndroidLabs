@@ -10,4 +10,7 @@
     <string name="dialog_title">Finish Activity?</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="switch_on">The switch is on</string>
+    <string name="switch_off">The switch is off</string>
+    <string name="extra">My information to share</string>
 </resources>
