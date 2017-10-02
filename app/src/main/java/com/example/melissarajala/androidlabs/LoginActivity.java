@@ -15,8 +15,8 @@ public class LoginActivity extends Activity {
     protected static final String ACTIVITY_NAME = "LoginActivity";
     Button button;
     EditText emailInput;
-    SharedPreferences sharedPref;
-    SharedPreferences.Editor editor;
+    public static SharedPreferences sharedPref;
+    public static SharedPreferences.Editor editor;
     static final String FILE_NAME = "prefFile";
     static final String KEY_EMAIL = "email";
 
