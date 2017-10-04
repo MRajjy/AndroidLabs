@@ -14,4 +14,6 @@
     <string name="switch_on">Le commutateur est activé</string>
     <string name="switch_off">L\'interrupteur est éteint</string>
     <string name="extra">Mes informations à partager</string>
+    <string name="ChatButtonText">Démarrer la discussion</string>
+    <string name="send_button">Envoyer</string>
 </resources>
