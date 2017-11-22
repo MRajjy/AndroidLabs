@@ -39,7 +39,7 @@ public class StartActivity extends Activity {
     }
 
     public void onActivityResult(int requestCode, int responseCode, Intent data){
-        if (requestCode == 10){
+        if (requestCode == 10 ){
             Log.i(ACTIVITY_NAME, "Returned to StartActivity.onActivityResult");
         }
 

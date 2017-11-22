@@ -19,10 +19,10 @@ import android.widget.Toast;
 public class ListItemsActivity extends Activity {
 
     protected static final String ACTIVITY_NAME = "ListItemsActivity";
-    ImageButton button = null;
+    ImageButton button;
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    Switch aSwitch = null;
-    CheckBox cbox = null;
+    Switch aSwitch;
+    CheckBox cbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class ListItemsActivity extends Activity {
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User clicked OK button
-                                    Intent resultIntent = new Intent(  );
+                                    Intent resultIntent = new Intent();
                                     resultIntent.putExtra("Response", R.string.extra);
                                     setResult(Activity.RESULT_OK, resultIntent);
                                     finish();

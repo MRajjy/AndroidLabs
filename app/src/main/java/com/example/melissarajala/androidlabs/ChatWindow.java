@@ -1,8 +1,12 @@
 package com.example.melissarajala.androidlabs;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +20,13 @@ import java.util.ArrayList;
 
 public class ChatWindow extends Activity {
 
+    private final static String ACTIVITY_NAME = "ChatWindow";
     Button send;
     EditText text;
     ListView chat;
     ArrayList<String> msgs = new ArrayList<>();
+    ChatDatabaseHelper cdh;
+
 
     private class ChatAdapter extends ArrayAdapter<String> {
         public ChatAdapter (Context ctx){
@@ -66,16 +73,68 @@ public class ChatWindow extends Activity {
         final ChatAdapter messageAdapter = new ChatAdapter( this );
         chat.setAdapter (messageAdapter);
 
+
+        //working with the database
+        cdh = new ChatDatabaseHelper(this);
+        //create a local variable for the SQLite database
+        final SQLiteDatabase db = cdh.getWritableDatabase();
+        //query for results from db
+        Cursor results = db.query(false, ChatDatabaseHelper.TABLE_NAME, new String[] {ChatDatabaseHelper.KEY_ID, ChatDatabaseHelper.KEY_MESSAGE},
+                null, null , null, null, null, null);
+
+        //resets the iteration of results
+        results.moveToFirst();
+
+        //add messages from db to msgs arraylist
+        //How many rows in the results:
+        int numResults = results.getCount();
+
+        int messageIndex = results.getColumnIndex(ChatDatabaseHelper.KEY_MESSAGE);
+
+        for (int i= 0; i < numResults; i++){
+            msgs.add(results.getString(messageIndex));
+            results.moveToNext();
+        }
+
+        //resets the iteration of results
+        results.moveToFirst();
+        //log the message retrieved and column count
+        while(!results.isAfterLast()){
+            Log.i(ACTIVITY_NAME, "SQL MESSAGE: " + results.getString(results.getColumnIndex( ChatDatabaseHelper.KEY_MESSAGE)));
+            Log.i(ACTIVITY_NAME, "Cursor's column count = " + results.getColumnCount());
+            results.moveToNext();
+        }
+
+        //print out the name of each column in the table
+        for(int i=0; i<results.getColumnCount();i++){
+            System.out.println(results.getColumnName(i));
+        }
+
         send.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                //Create new row data
+                ContentValues newData = new ContentValues();
+                newData.put(ChatDatabaseHelper.KEY_MESSAGE, text.getText().toString());
+
+                //Then insert
+                db.insert(ChatDatabaseHelper.TABLE_NAME, "" , newData);
+//                System.out.println(msgs);
+
                 msgs.add(text.getText().toString());
                 messageAdapter.notifyDataSetChanged(); //this restarts the process of getCount()/getView()
                 text.setText("");
+
             }
         });
 
+    }
 
-
+    public void onDestroy(){
+        super.onDestroy();
+        //close database
+        if (cdh != null) {
+            cdh.close();
+        }
     }
 
 }
