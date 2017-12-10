@@ -1,8 +1,10 @@
 package com.example.melissarajala.androidlabs;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -10,9 +12,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,8 +28,11 @@ public class ChatWindow extends Activity {
     Button send;
     EditText text;
     ListView chat;
+    FrameLayout frame;
+    boolean layout;
     ArrayList<String> msgs = new ArrayList<>();
     ChatDatabaseHelper cdh;
+    Cursor results;
 
 
     private class ChatAdapter extends ArrayAdapter<String> {
@@ -60,6 +67,13 @@ public class ChatWindow extends Activity {
             return result;
         }
 
+        //for lab 7 - fragments
+        public long getItemId(int position){
+            //move cursor to position and get ID of the object in that position
+            results.moveToPosition(position);
+            return  results.getLong(results.getColumnIndex("_id"));
+        }
+
     }
 
     @Override
@@ -69,6 +83,12 @@ public class ChatWindow extends Activity {
         send = (Button) findViewById(R.id.button3);
         text = (EditText) findViewById(R.id.editText2);
         chat = (ListView) findViewById(R.id.chatView);
+        frame = (FrameLayout) findViewById(R.id.frame_layout);
+
+        //check if frame layout was loaded
+        layout = findViewById(R.id.frame_layout) != null;
+        System.out.println("Is the layout not null? " + layout);
+
         //in this case, “this” is the ChatWindow, which is-A Context object
         final ChatAdapter messageAdapter = new ChatAdapter( this );
         chat.setAdapter (messageAdapter);
@@ -79,7 +99,7 @@ public class ChatWindow extends Activity {
         //create a local variable for the SQLite database
         final SQLiteDatabase db = cdh.getWritableDatabase();
         //query for results from db
-        Cursor results = db.query(false, ChatDatabaseHelper.TABLE_NAME, new String[] {ChatDatabaseHelper.KEY_ID, ChatDatabaseHelper.KEY_MESSAGE},
+        results = db.query(false, ChatDatabaseHelper.TABLE_NAME, new String[] {ChatDatabaseHelper.KEY_ID, ChatDatabaseHelper.KEY_MESSAGE},
                 null, null , null, null, null, null);
 
         //resets the iteration of results
@@ -126,6 +146,38 @@ public class ChatWindow extends Activity {
 
             }
         });
+
+        //for lab 7 - listener for list view in chat window
+        chat.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("ListItemClick", "You clicked an item");
+                Bundle b = new Bundle();
+                b.putLong("ID", id);
+                //show message details
+                //first determine if it is a phone or tablet
+                if (layout = findViewById(R.id.frame_layout) != null){ //on a tablet
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    MessageFragment mf = new MessageFragment();
+                    mf.setArguments(b); //pass the id to the fragment
+
+                    ft.replace(R.id.fragment_layout, mf )
+                            .addToBackStack("")
+                            .commit();
+
+                } else { //on a phone
+                    //start the MessageDetails class
+                    Intent intent = new Intent(ChatWindow.this, MessageDetails.class);
+                    intent.putExtras(b);
+                    startActivityForResult(intent, 10);
+                }
+            }
+        });
+
+    }
+
+    //lab 7
+    public void onActivityResult(){
 
     }
 

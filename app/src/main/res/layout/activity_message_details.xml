@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.melissarajala.androidlabs.MessageDetails"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp">
+
+    <FrameLayout
+        android:id="@+id/fragment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/deleteBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:text="Delete this message"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="457dp" />
+
+        <TextView
+            android:id="@+id/msgText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="MessageHere"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="5dp" />
+
+        <TextView
+            android:id="@+id/idText"
+            android:layout_width="344dp"
+            android:layout_height="wrap_content"
+            android:text="ID="
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="30dp" />
+
+    </FrameLayout>
+
+</android.support.constraint.ConstraintLayout>

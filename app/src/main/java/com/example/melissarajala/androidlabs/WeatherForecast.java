@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Xml;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,6 +32,7 @@ import static java.lang.System.in;
 
 public class WeatherForecast extends Activity {
 
+    protected static final String ACTIVITY_NAME = "WeatherForecast";
     ProgressBar progress;
     TextView minGUI, maxGUI, currentGUI;
     ImageView picGUI;
@@ -60,12 +62,6 @@ public class WeatherForecast extends Activity {
                     URL url = new URL(args[(int) i]);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     stream = conn.getInputStream();
-//                    conn.setReadTimeout(10000 /* milliseconds */);
-//                    conn.setConnectTimeout(15000 /* milliseconds */);
-//                    conn.setRequestMethod("GET");
-//                    conn.setDoInput(true);
-//                    // Starts the query
-//                    conn.connect();
                     XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                     factory.setNamespaceAware(false);
                     XmlPullParser parser = factory.newPullParser();
@@ -88,31 +84,6 @@ public class WeatherForecast extends Activity {
                                 //check that name of tag is weather and get the attribute: icon
                             } else if (parser.getName().equals("weather")) {
                                 icon = parser.getAttributeValue(null, "icon");
-                                System.out.println("The icon is: " + icon);
-                                //download the icon image from open weather map using the icon attribute from above
-                                HttpURLConnection connection = null;
-                                URL urlImage = new URL("http://openweathermap.org/img/w/" + icon + ".png");
-                                try {
-                                    connection = (HttpURLConnection) urlImage.openConnection();
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode == 200) {
-                                        pic = BitmapFactory.decodeStream(connection.getInputStream());
-                                        publishProgress(100);
-                                    } else
-                                        return null;
-                                } catch (Exception e) {
-                                    return null;
-                                } finally {
-                                    if (connection != null) {
-                                        connection.disconnect();
-                                    }
-                                }
-                                //save the bitmap object to local storage
-                                FileOutputStream outputStream = openFileOutput(icon + ".png", Context.MODE_PRIVATE);
-                                pic.compress(Bitmap.CompressFormat.PNG, 80, outputStream);
-                                outputStream.flush();
-                                outputStream.close();
 
                                 if (fileExistance(icon)) {
                                     FileInputStream fis = null;
@@ -123,7 +94,45 @@ public class WeatherForecast extends Activity {
                                     }
                                     pic = BitmapFactory.decodeStream(fis);
 
+                                } else {
+                                    //download the icon image from open weather map using the icon attribute from above
+                                    HttpURLConnection connection = null;
+                                    URL urlImage = new URL("http://openweathermap.org/img/w/" + icon + ".png");
+                                    try {
+                                        connection = (HttpURLConnection) urlImage.openConnection();
+                                        connection.connect();
+                                        int responseCode = connection.getResponseCode();
+                                        if (responseCode == 200) {
+                                            System.out.println("Downloading...");
+                                            pic = BitmapFactory.decodeStream(connection.getInputStream());
+                                            publishProgress(100);
+                                        } else
+                                            return null;
+                                    } catch (Exception e) {
+                                        return null;
+                                    } finally {
+                                        if (connection != null) {
+                                            connection.disconnect();
+                                        }
+                                    }
                                 }
+                                //save the bitmap object to local storage
+                                FileOutputStream outputStream = openFileOutput(icon + ".png", Context.MODE_PRIVATE);
+                                Log.i(ACTIVITY_NAME, "Image name = " + icon + ".png");
+                                pic.compress(Bitmap.CompressFormat.PNG, 80, outputStream);
+                                outputStream.flush();
+                                outputStream.close();
+
+//                                if (fileExistance(icon)) {
+//                                    FileInputStream fis = null;
+//                                    try {
+//                                        fis = openFileInput(icon);
+//                                    } catch (FileNotFoundException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                    pic = BitmapFactory.decodeStream(fis);
+//
+//                                }
                             }
                         }
                         //go to the next tag in the XML document
@@ -168,6 +177,7 @@ public class WeatherForecast extends Activity {
     }
     //method used for checking if image is already in local storage
     public boolean fileExistance(String fname){
+        Log.i(ACTIVITY_NAME, "Image found locally.");
         File file = getBaseContext().getFileStreamPath(fname);
         return file.exists();
     }
