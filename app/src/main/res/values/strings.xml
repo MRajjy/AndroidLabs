@@ -15,4 +15,5 @@
     <string name="extra">My information to share</string>
     <string name="ChatButtonText">Start Chat</string>
     <string name="send_button">Send</string>
+    <string name="title_activity_test_toolbar">TestToolbar</string>
 </resources>
