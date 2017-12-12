@@ -14,13 +14,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class TestToolbar extends AppCompatActivity {
 
     FloatingActionButton faButton;
-    String msg;
-    EditText text;
+    String response = "";
 
 
     @Override
@@ -28,7 +28,6 @@ public class TestToolbar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_toolbar);
 
-        msg = "nothing";
         Toolbar myToolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
@@ -90,8 +89,8 @@ public class TestToolbar extends AppCompatActivity {
                 AlertDialog.Builder builder2 = new AlertDialog.Builder(TestToolbar.this);
                 // Get the layout inflater
                 LayoutInflater inflater = this.getLayoutInflater();
-
-
+                final LinearLayout rootTag = (LinearLayout)inflater.inflate(R.layout.dialog_layout, null);
+                final EditText text = (EditText)rootTag.findViewById(R.id.newMsg);
                 // Inflate and set the layout for the dialog
                 // Pass null as the parent view because its going in the dialog layout
                 builder2.setView(inflater.inflate(R.layout.dialog_layout, null))
@@ -100,13 +99,13 @@ public class TestToolbar extends AppCompatActivity {
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                text = (EditText) findViewById(R.id.newMsg); //why is the text object nul????????
-                                msg = text.getText().toString();
-                                Snackbar.make(findViewById(R.id.newMsg), msg,
+                                response = text.getText().toString();
+                                Snackbar.make(findViewById(R.id.toolbar), response,
                                         Snackbar.LENGTH_SHORT)
                                         .show();
                             }
                         })
+                        .setView(rootTag)
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 //do nothing if cancelled
