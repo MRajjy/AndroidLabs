@@ -154,14 +154,15 @@ public class ChatWindow extends Activity {
                 Log.i("ListItemClick", "You clicked an item");
                 Bundle b = new Bundle();
                 b.putLong("ID", id);
+                b.putString("Message", results.getString(results.getColumnIndex( ChatDatabaseHelper.KEY_MESSAGE)));
                 //show message details
                 //first determine if it is a phone or tablet
                 if (layout = findViewById(R.id.frame_layout) != null){ //on a tablet
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     MessageFragment mf = new MessageFragment();
                     mf.setArguments(b); //pass the id to the fragment
-
-                    ft.replace(R.id.fragment_layout, mf )
+                    //need to get message too
+                    ft.replace(R.id.frame_layout, mf )
                             .addToBackStack("")
                             .commit();
 

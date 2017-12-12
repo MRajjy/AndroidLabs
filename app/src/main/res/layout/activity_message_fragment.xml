@@ -8,6 +8,10 @@
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="81dp">
 
+    <FrameLayout
+        android:id="@+id/fragment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <Button
             android:id="@+id/deleteBtn"
@@ -30,10 +34,11 @@
             android:id="@+id/msgText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="96dp"
             android:text="MessageHere"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="50dp" />
+            app:layout_constraintTop_toBottomOf="@+id/idText"
+            tools:layout_editor_absoluteX="140dp" />
 
-
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

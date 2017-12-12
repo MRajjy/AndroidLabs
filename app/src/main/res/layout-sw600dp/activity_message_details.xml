@@ -9,6 +9,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment_layout">
+        android:id="@+id/frame_layout">
     </FrameLayout>
 </android.support.constraint.ConstraintLayout>
