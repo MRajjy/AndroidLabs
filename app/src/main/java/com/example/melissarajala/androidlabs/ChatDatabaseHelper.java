@@ -13,7 +13,7 @@ public class ChatDatabaseHelper extends SQLiteOpenHelper {
 
     public static String ACTIVITY_NAME = "ChatDatabaseHelper";
     public static String DATABASE_NAME = "Messages.db";
-    public static int VERSION_NUM = 4;
+    public static int VERSION_NUM = 5;
     public final static String KEY_ID = "_id";
     public final static String KEY_MESSAGE = "MESSAGE";
     public final static String TABLE_NAME = "Lab5";

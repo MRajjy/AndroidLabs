@@ -21,7 +21,7 @@ public class MessageDetails extends Activity {
 
         //start Transaction to insert fragment in screen:
         FragmentTransaction ft =  getFragmentManager().beginTransaction();
-        MessageFragment mf = new MessageFragment();
+        MessageFragment mf = new MessageFragment(null);
         mf.setArguments(info);
         ft.add(R.id.frame_layout, mf );
         ft.commit();

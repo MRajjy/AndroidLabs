@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -158,8 +159,9 @@ public class ChatWindow extends Activity {
                 //show message details
                 //first determine if it is a phone or tablet
                 if (layout = findViewById(R.id.frame_layout) != null){ //on a tablet
+                    b.putBoolean("Tablet", true);
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    MessageFragment mf = new MessageFragment();
+                    MessageFragment mf = new MessageFragment(ChatWindow.this);
                     mf.setArguments(b); //pass the id to the fragment
                     //need to get message too
                     ft.replace(R.id.frame_layout, mf )
@@ -178,8 +180,16 @@ public class ChatWindow extends Activity {
     }
 
     //lab 7
-    public void onActivityResult(){
+    public void onActivityResult(int requestCode, int responseCode, Intent data){
+        if (responseCode == 10) {
+            int messagePassed = data.getIntExtra("ID", 0);
+            msgs.remove(messagePassed -1);
+        }
+    }
 
+    //for lab 7 - delete item from msgs array
+    public void delete(int index){
+        msgs.remove(index-1);
     }
 
     public void onDestroy(){

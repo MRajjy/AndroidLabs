@@ -2,6 +2,7 @@ package com.example.melissarajala.androidlabs;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,16 @@ public class MessageFragment extends Fragment {
     Activity parent;
     long id = 0;
     String msg = "";
+    boolean tablet;
+    ChatWindow chatWindow;
+
+    public MessageFragment(){
+
+    }
+
+    public MessageFragment(ChatWindow cw){
+        this.chatWindow = cw;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +44,7 @@ public class MessageFragment extends Fragment {
         if(passedInfo != null) {
             id = passedInfo.getLong("ID");
             msg = passedInfo.getString("Message");
-
+            tablet = passedInfo.getBoolean("Tablet");
         }
         Log.i("Passed key", ""+id);
 
@@ -52,12 +63,24 @@ public class MessageFragment extends Fragment {
 
 
         Button b = (Button)v.findViewById(R.id.deleteBtn);
-//        b.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                parent.getFragmentManager().beginTransaction().remove(MessageFragment.this).commit();
-//            }
-//        });
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                parent.getFragmentManager().beginTransaction().remove(MessageFragment.this).commit();
+
+                if (tablet) { //on a tablet
+                    chatWindow.delete((int) id);
+                } else {
+
+                    //on a phone
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("ID", (int) id);
+                    getActivity().setResult(10, resultIntent);
+                    getActivity().finish();
+
+                }
+            }
+        });
         return v;
     }
 
